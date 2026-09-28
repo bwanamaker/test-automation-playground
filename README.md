@@ -35,15 +35,15 @@ the visitor's device, otherwise the existing fallback fonts are used.
 
 ## Cloudflare Workers deployment
 
-The Worker serves static assets; it does not run the local Node.js server. Build the assets locally with:
+The Worker serves `public/` directly; it does not run the local Node.js server or require a build command. An optional standalone static build can be generated with:
 
 ```sh
 npm run build
 ```
 
-This writes an uncommitted `dist/` directory with directory-based `index.html` files for each route. `wrangler.toml` serves that directory from the site root, including pull-request Previews.
+This writes an uncommitted `dist/` directory with directory-based `index.html` files for each route. The Worker serves the source HTML in `public/` with the same clean URLs, including pull-request Previews.
 
-In the Worker's Cloudflare dashboard under **Settings → Build**, set the repository root as the root directory and `npm run build` as the build command. The default deploy command (`npx wrangler deploy`) and preview command (`npx wrangler preview`) use `wrangler.toml`. Under **Settings → Domains & Routes**, add `tap.brandonwanamaker.com` as a Custom Domain; Cloudflare creates its DNS record. Remove any conflicting old CNAME pointing to GitHub Pages before adding the Custom Domain.
+In the Worker's Cloudflare dashboard under **Settings → Build**, use the repository root as the root directory; no build command is necessary. The default deploy command (`npx wrangler deploy`) and preview command (`npx wrangler preview`) use `wrangler.toml`. Under **Settings → Domains & Routes**, add `tap.brandonwanamaker.com` as a Custom Domain; Cloudflare creates its DNS record. Remove any conflicting old CNAME pointing to GitHub Pages before adding the Custom Domain.
 
 ## Tests
 
@@ -54,7 +54,7 @@ npm run test:static
 npm run test:playwright
 ```
 
-The unit and Playwright suites exercise local development through the Node.js server. The static-site test verifies the Worker assets have every route and root-relative asset and navigation URLs. Playwright starts the local server automatically. Coverage includes homepage navigation, theme separation, all nine catalog-to-detail journeys, mobile layout, product options, basket confirmations, email validation, and astronaut application loading, form validation, and confirmation behavior.
+The unit and Playwright suites exercise local development through the Node.js server. The static-site test verifies the optional standalone build has every route and root-relative asset and navigation URLs. Playwright starts the local server automatically. Coverage includes homepage navigation, theme separation, all nine catalog-to-detail journeys, mobile layout, product options, basket confirmations, email validation, and astronaut application loading, form validation, and confirmation behavior.
 
 ## License
 

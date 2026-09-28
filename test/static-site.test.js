@@ -7,7 +7,7 @@ const { buildStaticSite } = require('../scripts/build-static');
 
 const products = ['acadia-roadster', 'yosemite-touring', 'zion-track', 'shenandoah-hybrid', 'redwood-cargo', 'olympic-cruiser', 'joshua-tree-gravel', 'glacier-folding', 'yellowstone-kids'];
 
-test('builds Worker routes with root-relative URLs', async () => {
+test('builds standalone static routes with root-relative URLs', async () => {
   const outputDir = await fs.mkdtemp(path.join(os.tmpdir(), 'test-automation-playground-static-'));
   try {
     await buildStaticSite({ outputDir });
