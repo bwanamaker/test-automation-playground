@@ -4,7 +4,7 @@ A website containing varied page types for practicing automated testing.
 
 ## Live demo
 
-The static site is published at [tap.brandonwanamaker.com](https://tap.brandonwanamaker.com/) after GitHub Pages is enabled for the repository. The deployed site includes the homepage, bicycle catalog and detail pages, and astronaut application at the same clean routes described below.
+The static site is published at [tap.brandonwanamaker.com](https://tap.brandonwanamaker.com/).
 
 ## Local development
 
