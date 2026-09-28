@@ -4,7 +4,7 @@ A website containing varied page types for practicing automated testing.
 
 ## Live demo
 
-The static site is published at [bwanamaker.github.io/test-automation-playground](https://bwanamaker.github.io/test-automation-playground/) after GitHub Pages is enabled for the repository. The deployed site includes the homepage, bicycle catalog and detail pages, and astronaut application at the same clean routes described below.
+The static site is served at [tap.brandonwanamaker.com](https://tap.brandonwanamaker.com/) by a Cloudflare Worker. It includes the homepage, bicycle catalog and detail pages, and astronaut application at the routes described below.
 
 ## Local development
 
@@ -33,17 +33,17 @@ Product slugs match the park-themed names (for example, Acadia Roadster lives at
 themes share the original Futura-first font stack; Futura must be installed on
 the visitor's device, otherwise the existing fallback fonts are used.
 
-## GitHub Pages deployment
+## Cloudflare Workers deployment
 
-GitHub Pages serves a static build; it does not run the local Node.js server. Build the Pages artifact locally with:
+The Worker serves static assets; it does not run the local Node.js server. Build the assets locally with:
 
 ```sh
-npm run build -- --base-path /test-automation-playground
+npm run build
 ```
 
-This writes an uncommitted `dist/` directory with directory-based `index.html` files for each clean route and updates internal URLs for the GitHub Pages repository path.
+This writes an uncommitted `dist/` directory with directory-based `index.html` files for each route. `wrangler.toml` serves that directory from the site root, including pull-request Previews.
 
-The deployment workflow validates and builds the static site for pull requests. On a push to `main`, it publishes changes that affect the static site, build script, or workflow. To activate the first deployment, choose **GitHub Actions** under **Settings → Pages → Build and deployment** in the repository.
+In the Worker's Cloudflare dashboard under **Settings → Build**, set the repository root as the root directory and `npm run build` as the build command. The default deploy command (`npx wrangler deploy`) and preview command (`npx wrangler preview`) use `wrangler.toml`. Under **Settings → Domains & Routes**, add `tap.brandonwanamaker.com` as a Custom Domain; Cloudflare creates its DNS record. Remove any conflicting old CNAME pointing to GitHub Pages before adding the Custom Domain.
 
 ## Tests
 
@@ -54,7 +54,7 @@ npm run test:static
 npm run test:playwright
 ```
 
-The unit and Playwright suites exercise local development through the Node.js server. The static-site test verifies the GitHub Pages artifact has every route and correctly prefixed asset and navigation URLs. Playwright starts the local server automatically. Coverage includes homepage navigation, theme separation, all nine catalog-to-detail journeys, mobile layout, product options, basket confirmations, email validation, and astronaut application loading, form validation, and confirmation behavior.
+The unit and Playwright suites exercise local development through the Node.js server. The static-site test verifies the Worker assets have every route and root-relative asset and navigation URLs. Playwright starts the local server automatically. Coverage includes homepage navigation, theme separation, all nine catalog-to-detail journeys, mobile layout, product options, basket confirmations, email validation, and astronaut application loading, form validation, and confirmation behavior.
 
 ## License
 
