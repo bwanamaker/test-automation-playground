@@ -1,8 +1,8 @@
-const loader = document.querySelector('#mission-loading');
-const application = document.querySelector('#application-shell');
-const form = document.querySelector('#astronaut-form');
-const summary = document.querySelector('#form-summary');
-const confirmation = document.querySelector('#application-confirmation');
+const loader = document.querySelector<HTMLElement>('#mission-loading')!;
+const application = document.querySelector<HTMLElement>('#application-shell')!;
+const form = document.querySelector<HTMLFormElement>('#astronaut-form')!;
+const summary = document.querySelector<HTMLElement>('#form-summary')!;
+const confirmation = document.querySelector<HTMLElement>('#application-confirmation')!;
 
 const previousDelay = Number(sessionStorage.getItem('astronaut-load-delay'));
 let loadDelay = 5000 + Math.floor(Math.random() * 10001);
@@ -27,7 +27,7 @@ const messages = {
   consent: 'You must accept the realities of space before launch.',
 };
 
-function setError(input, message) {
+function setError(input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement, message: string) {
   const error = document.querySelector(`#${input.id}-error`);
   input.setCustomValidity(message);
   input.setAttribute('aria-invalid', String(Boolean(message)));
@@ -35,7 +35,7 @@ function setError(input, message) {
   return !message;
 }
 
-function validateField(input) {
+function validateField(input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) {
   const value = input.value.trim();
   let message = '';
   input.setCustomValidity('');
@@ -43,19 +43,19 @@ function validateField(input) {
   else if (input.id === 'email' && (!value || !input.validity.valid)) message = messages.email;
   else if (input.id === 'birth-date') {
     const birthDate = new Date(`${value}T00:00:00`);
-    const age = (Date.now() - birthDate) / 31557600000;
+    const age = (Date.now() - birthDate.getTime()) / 31557600000;
     if (!value || Number.isNaN(birthDate.valueOf()) || age < 18) message = messages['birth-date'];
   } else if (input.id === 'mission-role' && !value) message = messages['mission-role'];
   else if (input.id === 'flight-hours' && (!value || !input.validity.valid)) message = messages['flight-hours'];
   else if (input.id === 'emergency-name' && !value) message = messages['emergency-name'];
   else if (input.id === 'emergency-phone' && (!value || (value.match(/\d/g) || []).length < 7)) message = messages['emergency-phone'];
   else if (input.id === 'mission-statement' && value.length < 30) message = messages['mission-statement'];
-  else if (input.id === 'consent' && !input.checked) message = messages.consent;
+  else if (input.id === 'consent' && input instanceof HTMLInputElement && !input.checked) message = messages.consent;
   return setError(input, message);
 }
 
-function validateGroup(name, message) {
-  const choices = [...form.querySelectorAll(`[name="${name}"]`)];
+function validateGroup(name: string, message: string) {
+  const choices = [...form.querySelectorAll<HTMLInputElement>(`[name="${name}"]`)];
   const valid = choices.some(choice => choice.checked);
   const error = document.querySelector(`#${name === 'suitSize' ? 'suit-size' : name}-error`);
   choices.forEach(choice => choice.setAttribute('aria-invalid', String(!valid)));
@@ -64,7 +64,7 @@ function validateGroup(name, message) {
 }
 
 function validateForm() {
-  const inputs = [...form.querySelectorAll('#full-name, #email, #birth-date, #mission-role, #flight-hours, #emergency-name, #emergency-phone, #mission-statement, #consent')];
+  const inputs = [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('#full-name, #email, #birth-date, #mission-role, #flight-hours, #emergency-name, #emergency-phone, #mission-statement, #consent')];
   const fieldsValid = inputs.map(validateField).every(Boolean);
   const suitValid = validateGroup('suitSize', 'Choose the spacesuit size that suits you.');
   const specialtiesValid = validateGroup('specialties', 'Select at least one mission specialty.');
@@ -79,32 +79,32 @@ form.addEventListener('submit', event => {
     summary.hidden = false;
     summary.textContent = 'Mission Control needs a few corrections before this application can launch.';
     summary.focus();
-    form.querySelector('[aria-invalid="true"]')?.focus();
+    form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
     return;
   }
   summary.hidden = true;
-  document.querySelector('#confirmation-message').textContent = `Thank you, ${document.querySelector('#full-name').value.trim()}. Your file is safely aboard the Starward Bureau intake rocket.`;
+  document.querySelector('#confirmation-message')!.textContent = `Thank you, ${document.querySelector<HTMLInputElement>('#full-name')!.value.trim()}. Your file is safely aboard the Starward Bureau intake rocket.`;
   form.hidden = true;
   confirmation.hidden = false;
   confirmation.focus();
 });
 
 form.addEventListener('input', event => {
-  if (attemptedSubmission && event.target.matches('input, textarea, select')) validateField(event.target);
+  if (attemptedSubmission && (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement)) validateField(event.target);
 });
 form.addEventListener('change', event => {
   if (!attemptedSubmission) return;
-  if (event.target.name === 'suitSize') validateGroup('suitSize', 'Choose the spacesuit size that suits you.');
-  if (event.target.name === 'specialties') validateGroup('specialties', 'Select at least one mission specialty.');
+  if (event.target instanceof HTMLInputElement && event.target.name === 'suitSize') validateGroup('suitSize', 'Choose the spacesuit size that suits you.');
+  if (event.target instanceof HTMLInputElement && event.target.name === 'specialties') validateGroup('specialties', 'Select at least one mission specialty.');
 });
 form.addEventListener('reset', () => {
   attemptedSubmission = false;
   summary.hidden = true;
-  form.querySelectorAll('.field-error').forEach(error => error.textContent = '');
+  form.querySelectorAll<HTMLElement>('.field-error').forEach(error => error.textContent = '');
   form.querySelectorAll('[aria-invalid]').forEach(input => input.removeAttribute('aria-invalid'));
 });
 
-document.querySelector('#return-to-earth').addEventListener('click', () => {
+document.querySelector('#return-to-earth')!.addEventListener('click', () => {
   form.reset();
   window.location.reload();
 });

@@ -1,9 +1,9 @@
-const assert = require('node:assert/strict');
-const fs = require('node:fs/promises');
-const os = require('node:os');
-const path = require('node:path');
-const test = require('node:test');
-const { buildStaticSite } = require('../scripts/build-static');
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import test from 'node:test';
+import { buildStaticSite } from '../scripts/build-static';
 
 const products = ['acadia-roadster', 'yosemite-touring', 'zion-track', 'shenandoah-hybrid', 'redwood-cargo', 'olympic-cruiser', 'joshua-tree-gravel', 'glacier-folding', 'yellowstone-kids'];
 

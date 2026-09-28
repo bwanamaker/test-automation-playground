@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "target": "ES2022",
+    "noEmit": true
+  },
+  "include": ["server.ts", "scripts/**/*.ts", "playwright.config.ts", "test/**/*.ts"]
+}

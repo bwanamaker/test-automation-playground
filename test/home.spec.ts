@@ -1,4 +1,4 @@
-const { expect, test } = require('@playwright/test');
+import { expect, test } from '@playwright/test';
 
 test('homepage links to the bike shop and keeps its distinct theme and shared font', async ({ page }) => {
   await page.goto('/');

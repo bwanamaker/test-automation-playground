@@ -1,4 +1,4 @@
-const { expect, test } = require('@playwright/test');
+import { expect, test } from '@playwright/test';
 
 test.describe('astronaut application', () => {
   test('uses a distinct five-to-fifteen-second loading sequence for each visit', async ({ page }) => {
