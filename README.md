@@ -33,18 +33,6 @@ Product slugs match the park-themed names (for example, Acadia Roadster lives at
 themes share the original Futura-first font stack; Futura must be installed on
 the visitor's device, otherwise the existing fallback fonts are used.
 
-## Cloudflare Worker deployment
-
-The Worker serves files from `public/`. Wrangler compiles the browser TypeScript into that directory before deployment using the build command in `wrangler.toml`.
-
-To create a standalone static build with directory-based `index.html` files for each clean route, run:
-
-```sh
-npm run build -- --base-path /test-automation-playground
-```
-
-This writes an uncommitted `dist/` directory and prefixes internal URLs with the supplied base path. Omit `--base-path` for root-relative URLs.
-
 ## Tests
 
 ```sh
