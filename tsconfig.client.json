@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "outDir": "public",
+    "rootDir": "client",
+    "strict": true,
+    "target": "ES2022",
+    "types": [],
+    "noEmitOnError": true
+  },
+  "include": ["client/*.ts"]
+}

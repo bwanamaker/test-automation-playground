@@ -1,4 +1,4 @@
-const { expect, test } = require('@playwright/test');
+import { expect, test } from '@playwright/test';
 
 const products = [
   { slug: 'acadia-roadster', name: 'Acadia Roadster' },
